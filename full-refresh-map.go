@@ -6,8 +6,8 @@ import (
 	"time"
 )
 
-// WholeRefreshMap is a generic map with time-to-live functionality
-type WholeRefreshMap[K comparable, V any] struct {
+// FullRefreshMap is a generic map with time-to-live functionality
+type FullRefreshMap[K comparable, V any] struct {
 	mu          sync.RWMutex
 	data        map[K]V
 	ttl         time.Duration
@@ -15,16 +15,16 @@ type WholeRefreshMap[K comparable, V any] struct {
 	lastRefresh time.Time
 }
 
-// NewWholeRefreshMap initializes the TTL map with a populate function and TTL duration
-func NewWholeRefreshMap[K comparable, V any](populate func(context.Context) (map[K]V, error), ttl time.Duration) *WholeRefreshMap[K, V] {
-	t := &WholeRefreshMap[K, V]{}
+// NewFullRefreshMap initializes the TTL map with a populate function and TTL duration
+func NewFullRefreshMap[K comparable, V any](populate func(context.Context) (map[K]V, error), ttl time.Duration) *FullRefreshMap[K, V] {
+	t := &FullRefreshMap[K, V]{}
 	t.populate = populate
 	t.ttl = ttl
 	return t
 }
 
 // Get retrieves a value from the map
-func (t *WholeRefreshMap[K, V]) Get(ctx context.Context, key K) (V, bool, error) {
+func (t *FullRefreshMap[K, V]) Get(ctx context.Context, key K) (V, bool, error) {
 	t.mu.RLock()
 	defer t.mu.RUnlock()
 
