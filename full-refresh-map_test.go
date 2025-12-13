@@ -39,6 +39,17 @@ func TestFullRefreshMap(t *testing.T) {
 				return
 			}
 		}
+		{
+			v, ok, _ := m.Get(ctx, "key")
+			if !ok {
+				t.Error("expected cache")
+				return
+			}
+			if v != 2 {
+				t.Error("expected value to be 2")
+				return
+			}
+		}
 	})
 
 }
